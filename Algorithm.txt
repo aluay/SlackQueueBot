@@ -1,0 +1,78 @@
+Bot Algorithm:
+
+1. Bot invited to channel
+  a. Console.log that the bot has been invited to the channel
+  b. Log the activity in the log file
+  c. Capture the channel id and pass it to a function and use it to create a database and the log
+  d. Add the inviter to the admins database
+
+2. Bot initialization
+  a. The slash command bot_name is trigger in the channel
+    i. If the body.text is help, then trigger the help function to dispaly the help info
+    ii. If the body.text is hours, then trigger the hours function to display the hours from the database
+    iii. If the body.text is empty, then trigger the bot to dispaly the queue message and pin it to the channel
+
+3. User joins the queue
+  a. User clicks the JOIN button
+    i. Grab the action timestamp
+    ii. Check if the user has joined within or outside working hours
+    iii. If user joins within working hours
+      1. Trigger the join function
+      2. Check if the user is already in the database
+      3. If the user is not in the database, then add the user to the database
+      4. If the user is in the database, then don't add the user in the database, and send a notification message (you're already in the queue)
+      5. Update the queue in the channel to show the newly added user
+    iiii. If the user joins outside working hours
+      1. Do the above, but also send a notification message (this channel operates betwwen X hours and X hours)
+      
+4. User leaves the queue
+    i. Check if the user is in the queue
+    ii. If the user is in the database, then remove the user
+    iii. If the user is not in the database, then send a notification message (you're not in the queue)
+
+5.  User is an admin
+  a. User removes the first person
+    i. Check the database and make sure there's atleast one person.
+    ii. If there's atleast one person, then remove said person.
+    iii. If there's more than one person, then remove the first person in the database.
+  b. User removes a specific person
+    i. Prompt the user with a search box
+    ii. Capture the input from the search box
+    iii. Look for the user in the database
+    iiii. If user is found, then remove the user
+    iiiii. If user is not found, do nothing
+  c. User clears queue
+    i. Connect to the database and delete everyone from the database
+    ii. Get the timestamp of the original queue message fro Slack
+    iii. Remove original queue message from Slack
+    iiii. Send a new queue message to Slack
+  d. User brings queue to front
+    i. Get the timestamp of the original queue message fro Slack
+    ii. Remove original queue message from Slack
+    iii. Send a new queue message to Slack
+  e. User invokes configurations modal
+    i. Show the configurations modal
+
+6. User changes configurations [User must be an admin]
+  a. User modifies notification message
+    i. Prompt the user with a text box
+    ii. Capture the entered text
+    iii. Save the text to the database
+  b. User modifies operation hours
+    i. User selects the targeted day from the dropdown list
+    ii. Once day is selected, prompt user with in ainput window to enter the hours
+    iii. Capture the entered hours
+    iiii. Save entered hours to the database
+  c. User modifies admins list
+    i. User clicks on Add admin
+      1. Prompt the user to select another user to add as an admin
+      2. Show current admins within the same window
+    ii. User clicks on Remove Admins
+      1. Prompt the user to select another user to add as an admin
+      2. Show current admins within the same window
+  d. User closes the configurations modal by clicking Close
+
+Note:
+The activities above must be acknowledged using the await ack() function.
+The activities above must be save to a log using the logger() function.
+The activities above must be in an asynchronous code using the async() function.

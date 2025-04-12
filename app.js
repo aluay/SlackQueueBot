@@ -57,7 +57,7 @@ methods.app.command("/qbot", async ({ ack, body }) => {
       token: process.env.SLACK_BOT_TOKEN,
       channel: body.channel_id,
       user: body.user_id,
-      text: `This guy made me :point_right: abdullah.luay@nike.com`
+      text: `This guy made me :point_right: Abdullah Luay`
     });
   } else {
     await methods.app.client.chat.postEphemeral({
